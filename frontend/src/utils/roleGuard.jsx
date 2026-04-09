@@ -1,4 +1,4 @@
-import { Navigate, useLocation } from 'react-router-dom';
+import { Navigate, useLocation, Outlet } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 
 const ROLE_HOME = { admin: '/admin', trainer: '/trainer', member: '/member' };
@@ -10,13 +10,13 @@ export const ProtectedRoute = ({ children, allowedRoles }) => {
     if (allowedRoles && !allowedRoles.includes(user.role)) {
         return <Navigate to={ROLE_HOME[user.role] || '/login'} replace />;
     }
-    return children;
+    return children ? children : <Outlet />;
 };
 
 export const PublicRoute = ({ children }) => {
     const { user } = useAuth();
     if (user) return <Navigate to={ROLE_HOME[user.role] || '/'} replace />;
-    return children;
+    return children ? children : <Outlet />;
 };
 
 export { ROLE_HOME };

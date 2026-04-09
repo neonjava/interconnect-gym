@@ -5,6 +5,7 @@ import DashboardLayout from './components/layout/DashboardLayout.jsx';
 // Auth
 import Login from './pages/auth/Login.jsx';
 import Register from './pages/auth/Register.jsx';
+import Landing from './pages/Landing.jsx';
 
 // Admin
 import AdminDashboard from './pages/admin/Dashboard.jsx';
@@ -34,8 +35,11 @@ export default function App() {
     return (
         <Routes>
             {/* Public */}
-            <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
-            <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} />
+            <Route element={<PublicRoute />}>
+                <Route path="/" element={<Landing />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+            </Route>
 
             {/* Admin */}
             <Route path="/admin" element={<ProtectedRoute allowedRoles={['admin']}><DashboardLayout /></ProtectedRoute>}>
@@ -68,7 +72,6 @@ export default function App() {
             </Route>
 
             {/* Fallback */}
-            <Route path="/" element={<Navigate to="/login" replace />} />
             <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
     );

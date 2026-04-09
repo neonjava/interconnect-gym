@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Dumbbell, Mail, Lock, Eye, EyeOff } from 'lucide-react';
+import { Dumbbell, Mail, Lock, Eye, EyeOff, Chrome } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { Spinner } from '../../components/shared/index.jsx';
 import toast from 'react-hot-toast';
@@ -67,6 +67,21 @@ export default function Login() {
                         {loading ? <Spinner size="sm" /> : 'Sign In'}
                     </button>
                 </form>
+
+                <div className="auth-divider">
+                    <span>Or continue with</span>
+                </div>
+
+                <div className="social-auth-grid">
+                    <button className="btn btn-secondary w-full flex items-center justify-center gap-2">
+                        <Chrome size={18} />
+                        Google
+                    </button>
+                    <button className="btn btn-secondary w-full flex items-center justify-center gap-2">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12.152 6.896c-.115.024-.233.033-.35.035-.117.002-.235-.005-.352-.022l-.121-.023c-.16-.035-.316-.091-.462-.167-.146-.075-.276-.179-.382-.303-.106-.123-.186-.264-.236-.416-.048-.152-.068-.31-.057-.468.012-.158.053-.312.122-.455.07-.142.167-.269.285-.373.118-.104.254-.185.402-.239.148-.054.305-.079.462-.075.141.004.281.029.414.075.133.045.258.115.367.204l1.107 1.107c.071.071.127.155.166.248.038.093.058.192.058.291 0 .1-.02.199-.058.291-.039.092-.095.177-.166.248L12.44 6.608c-.084.084-.184.151-.293.197-.109.046-.226.075-.345.086-.118.012-.238.007-.357-.013-.119-.02-.235-.054-.344-.103-.105-.047-.2-.112-.284-.191-.084-.079-.153-.173-.203-.277-.051-.104-.084-.217-.098-.333-.014-.116-.009-.234.015-.35l.024-.122a2.44 2.44 0 0 1 .462-.462c.15-.102.32-.174.5-.213l.352-.047c.189-.025.381-.019.567.018l.344.07c.174.035.339.106.484.208.145.101.267.231.358.38l.019.034c.091.149.149.314.171.488.021.173.007.35-.041.517z" /></svg>
+                        Apple
+                    </button>
+                </div>
 
                 <div className="auth-form__footer mt-4">
                     Don't have an account? <Link to="/register">Register</Link>
