@@ -20,11 +20,24 @@ const memberRoutes = require('./routes/member.routes');
 const app = express();
 
 // Security & parsing
-app.use(helmet());
-app.use(cors({ origin: clientUrl, credentials: true }));
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
+
+// Security headers with production CSP
+if (env === 'production') {
+    app.use(helmet({
+        contentSecurityPolicy: {
+            directives: {
+                ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+                "script-src": ["'self'", "'unsafe-inline'"],
+                "img-src": ["'self'", "data:", "blob:"],
+            },
+        },
+    }));
+} else {
+    app.use(helmet());
+}
+
+app.use(cors({ origin: env === 'production' ? true : clientUrl, credentials: true }));
 if (env !== 'test') app.use(morgan(env === 'production' ? 'combined' : 'dev'));
 
 // Static uploads
@@ -39,8 +52,19 @@ app.use('/api/v1/member', memberRoutes);
 // Health check
 app.get('/api/health', (_req, res) => res.json({ success: true, message: 'Strength Arena API is running 🏋️', timestamp: new Date() }));
 
-// 404 handler
-app.use((_req, res) => res.status(404).json({ success: false, message: 'Route not found.' }));
+// 404 handler for API
+app.use('/api', (_req, res) => res.status(404).json({ success: false, message: 'API Route not found.' }));
+
+// Serve Frontend in Production
+if (env === 'production') {
+    const frontendPath = path.join(__dirname, '../frontend/dist');
+    app.use(express.static(frontendPath));
+    app.get('*', (req, res) => {
+        if (!req.path.startsWith('/api')) {
+            res.sendFile(path.join(frontendPath, 'index.html'));
+        }
+    });
+}
 
 // Global error handler
 app.use(errorHandler);
