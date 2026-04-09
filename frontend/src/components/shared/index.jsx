@@ -1,4 +1,5 @@
 import { Dumbbell } from 'lucide-react';
+export { fmtDate, fmtDateTime, getInitials } from '../../utils/formatDate.js';
 
 export function StatCard({ icon: Icon, label, value, change, changeType = 'positive', iconBg = 'rgba(124,58,237,0.15)', iconColor = 'var(--primary)' }) {
     return (
